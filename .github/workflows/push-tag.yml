@@ -1,0 +1,16 @@
+name: push-tag
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - shell: pwsh
+        run: |
+          $t = "uipath.test.1.0.$env:GITHUB_RUN_NUMBER"
+          git config user.name github-actions[bot]; git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git tag -a $t -m test
+          git push origin "refs/tags/$t"
+          exit $LASTEXITCODE
